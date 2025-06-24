@@ -2,23 +2,17 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN_HOME' // Match this with Jenkins global tool name
+        maven 'MAVEN_HOME' // ✅ matches XML config
     }
 
     stages {
-        stage('Welcome Stage') {
-            steps {
-                echo "🎉 Welcome to Pipeline!"
-            }
-        }
-
-        stage('Maven Build') {
+        stage('Build') {
             steps {
                 bat '"%MAVEN_HOME%\\bin\\mvn.cmd" clean install'
             }
         }
 
-        stage('Run Tests') {
+        stage('Test') {
             steps {
                 bat '"%MAVEN_HOME%\\bin\\mvn.cmd" test'
             }
@@ -30,19 +24,16 @@ pipeline {
             }
         }
 
-        stage('Build Success') {
+        stage('Finish') {
             steps {
-                echo "✅ Build Completed!"
+                echo "✅ Build Completed Successfully"
             }
         }
     }
 
     post {
         failure {
-            echo "❌ Build Failed!"
-        }
-        always {
-            echo "📦 Pipeline Finished."
+            echo "❌ Build failed!"
         }
     }
 }
